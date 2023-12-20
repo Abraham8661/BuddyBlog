@@ -1,0 +1,38 @@
+#footer2 {
+    padding-top: 3rem;
+    width: 100vw;
+    height: 5.5rem;
+    flex-shrink: 0;
+    margin-top: 8rem;
+    background-color: black;
+}
+
+#footer2 .footer-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 5rem;
+    max-width: 90rem;
+    margin-right: 5rem;
+}
+
+#footer2 .footer-text .developer-name {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#footer2 .footer-text .social-handles {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: left;
+    align-items: flex-end;
+    color: white;
+}
+
+#footer2 .footer-text .social-handles .social-logo {
+    display: flex;
+    gap: 1rem;
+}
