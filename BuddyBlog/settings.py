@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--vcpgd1v4(r*3h%48z$$^(ec@iokl#d$o$&h=n@(3!5+349$9k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "buddy-blog-0e4cf9783a16.herokuapp.com", "127.0.0.1"
@@ -157,7 +157,7 @@ AUTH_USER_MODEL = "users.User"
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-if os.getcwd() == "/app":
-    DEBUG = False
-else:
-    DEBUG = True
+#if os.getcwd() == "/app":
+#    DEBUG = False
+#else:
+#    DEBUG = True
