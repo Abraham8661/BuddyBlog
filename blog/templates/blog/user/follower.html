@@ -1,0 +1,123 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Your Followers{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/follower.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<section id="who-to-follow-section">
+    <div class="hero-image">
+        <div id="home-nav2">
+            <nav class="nav-bar">
+            <a href="{% url "user_home" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+            <h6>{{ greeting }}, {{ user.first_name }}!</h6>
+            <div class="right-section">
+                <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+                <a class="share-story-btn" href="{% url "write-story" %}"><i class="fa-solid fa-feather" style="color: #ffffff;"></i>Share your story</a>
+                <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+                {% if user.profile_picture %}
+                    <img id="image-box" src="{{ user.profile_picture.url }}" alt="">
+                {% else %}
+                    <img id="image-box" src="{% static "blog/images/blank-picture.png" %}" alt="">
+                {% endif %}
+                <div id="menu-dialog">
+                <button id="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
+    
+                    <div class="menu-group">
+                        <a href="{% url "user-profile" %}">My Profile</a>
+                        <a href="{% url "logout" %}">Logout</a>
+                    </div>
+
+                </div>
+            </div>  
+            </nav>
+        </div>
+
+        <div class="hero-text">
+            <h1>YOUR FOLLOWERS</h1>
+            <p>{{ user_profile.followers.all|length }} followers</p>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/who-to-follow.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+<div class="who-to-follow">
+    {% if user_profile.followers.all %}
+    <div class="all-follow">
+    
+        {% for following in user_profile.followers.all %}
+        <div>
+            <form action="" class="single-follow" method="POST">
+                {% csrf_token %}
+            <input type="hidden" name="author-to-follow" value="{{ following.user.id }}">
+            <div class="text-img">
+            <div class="author-image">
+                <a href="{% url "author-profile" following.user.username %}">
+                {% if following.user.profile_picture %}
+                <img src="{{ following.user.profile_picture.url }}" alt="">
+                {% else %}
+                <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                {% endif %}
+                </a>
+            </div>
+            <div class="follow-text">
+                <h5>{{ following.user.first_name }} {{ following.user.last_name }}</h5>
+                {% if following.user.bio %}
+                    <p>{{ following.user.bio|truncatechars:80 }}</p>
+                {% endif %}
+            </div>
+            </div>
+            {% if following not in user_profile.following.all %}
+            <button class="follow-btn">Follow</button>
+            </form>
+            {% else %}
+            <form action="" class="single-follow" method="POST">
+            <input type="hidden" name="author-to-unfollow" value="{{ following.user.id }}">
+            <button class="unfollow-btn">Unfollow</button>
+            </form>
+            {% endif %}
+        </div>
+        
+        {% endfor %}
+       <a id="see-more-followers-btn" href="{% url "who-to-follow" %}">See more</a>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+
+{% include "blog/includes/footer.html" %}
+
+<script>
+        var menu_area = document.getElementById("menu-dialog");
+        var image_box = document.getElementById("image-box");
+        var cancel_button = document.getElementById("cancel-btn");
+
+         // Add event listener to the checkbox
+        image_box.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (image_box.click) {
+            menu_area.style.display = "block";
+          } else {
+            menu_area.style.display = "none";
+          }
+        });
+
+        
+       
+        cancel_button.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (cancel_button.click) {
+            menu_area.style.display = "none";
+          } else {
+            menu_area.style.display = "none";
+          }
+        });
+
+    </script>
+{% endblock contents %}

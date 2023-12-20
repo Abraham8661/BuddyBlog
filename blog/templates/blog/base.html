@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_title %}{% endblock page_title %}</title>
+    <link rel="stylesheet" href="{% static "blog/base.css" %}">
+    {% block css_files %}{% endblock css_files %}
+    <link rel="shortcut icon" href="{% static "blog/images/siteimage.png" %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+</head>
+
+<body>
+ 
+{% block contents %}{% endblock contents %}   
+</body>
+</html>

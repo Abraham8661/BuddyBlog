@@ -1,0 +1,75 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Edit profile{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/settings.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% include "blog/includes/nav-bar.html" %}
+<section id="edit-profile-section">
+    <div class="hero-image">
+        <div class="hero-text">
+            <h1>EDIT PROFILE</h1>
+            <div id="imagePreview">
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="">
+                {% else %}
+                <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/edit-profile.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+<section class="account-info">
+    <nav class="left-sec-nav">
+        <ul>
+            <a href="{% url "edit-profile" %}"><li>Account Info</li></a>
+            <a class="current-item" href=""><li>Settings</li></a>
+        </ul>
+
+    <form action="" class="profile-form" method="POST">
+        {% csrf_token %}
+        <h5>Change Password</h5>
+        {% for form in password_form %}
+        <div class="form-control">
+            {{ form.label }}
+            {{ form }}
+            {{ form.errors }}
+        </div>
+        {% endfor %}
+
+        </div>
+       
+        <button id="signin-form-btn">Save Changes</button>
+
+    </form>
+    </nav>
+    
+    <div class="right-section">
+        <div class="item">
+            <a href="{% url "deactivate-account" %}">Deactivate your account</a>
+            <p>Deactivating will suspend your account until you sign back in.</p>
+        </div>
+        <div class="item">
+            <a href="{% url "delete-account" %}">Delete your account</a>
+            <p>Permanently delete your account and all of your content.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+{% include "blog/includes/footer.html" %}
+{% endblock contents %}

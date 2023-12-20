@@ -1,0 +1,49 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block page_title %}Search{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/category_search.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+{% include "blog/includes/nav-bar.html" %}
+
+<section class="section">
+        <form action="" method="get" class="search-form">
+        <input type="text" placeholder="Search stories, authors and categories here ...", value="{{ search_query }}" name="search-query">
+        <button>Search</button>
+        </form>
+</section>
+
+{% if search_query %}
+<section class="search-results">
+        <h3><span class="result">Results for</span> {{ search_query }}</h3>
+        <p>{{ stories|length }} results</p>
+
+        <nav class="left-sec-nav">
+            <ul>
+                <a href="{% url "search" %}"><li>Stories</li></a>
+                <a href="{% url "author-search" %}"><li>Authors</li></a>
+                <a class="current-item" href="{% url "category-search" %}"><li>Categories</li></a>
+            </ul>
+        </nav>
+
+       <section id="all-categories-cards">
+        {% for cate in categories %}
+        <div class="single-category-card">
+            <img src="{{ cate.category_image.url }}" alt="{{ cate.category_name }}">
+            <div class="category-name">
+                <h4>{{ cate.category_name }}</h4>
+                <p>{% total_stories cate.category_name %} Stories</p>
+            </div>
+            <p>{{ cate.short_description }}</p>
+            <a href="{% url "single-category" cate.slug %}">Explore</a>
+        </div>
+        {% endfor %}
+        </section>
+</section>
+{% endif %}
+
+{% endblock contents %}

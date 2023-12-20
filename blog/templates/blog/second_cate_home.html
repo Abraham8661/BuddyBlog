@@ -1,0 +1,117 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Welcome to BuddyBlog{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/index.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<section id="hero-section">
+    <div class="hero-image">
+        <nav class="nav-bar">
+        <a href="{% url "home_page" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        <ul class="nav-links">
+            <li><a href="{% url "all-categories" %}">ALL CATEGORIES</a></li>
+            {% for category in nav_categories %}
+            <li><a href="{% url "single-category" category.slug %}">{{ category.category_name|upper }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href=""><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+        <div class="hero-login">
+            <a href="{% url "signin" %}">LOGIN</a>
+        </div>
+        </nav>
+
+        <div class="hero-text">
+            <h1>PERSONAL BLOG FOR FRIENDS</h1>
+            <P>Your companion for sharing your stories</P>
+            <a href="{% url "signup" %}">Start sharing stories</a>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/hero-image.png" %}" alt="hero-section-image">
+    </div> 
+</section>
+
+<section id="trending-on-buddyblog">
+    <h2>Trending On BuddyBlog</h2>
+    <div class="trending-group">
+        {% for story in trending_stories %}
+        <div class="trending-card">
+            <div id="trending-image">
+                <img src="{{ story.story_image.url }}" alt="{{ story.story_heading }}">
+            </div>
+            <div class="trending-card-text">
+                    <h5 class="card-head">{{ story.story_heading }}</h5>
+                    <div class="author-image">
+                        <h4>{{ story.author.first_name }} {{ story.author.last_name }}</h4>
+                        <p>{{ story.date|date:"M d, Y"}}</p>
+                        <div class="circle"></div>
+                        <p>{{ story.wpm }} min read</p>
+                    </div>
+                    <p>{{ story.text_contents|truncatechars:140}}</p>
+                    <a href="{% url "post-details" story.story_category.slug story.slug  %}">Read post</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section id="from-the-community">
+    <h2>From the Community</h2>
+    <div class="community-items">
+        <div class="left-section">
+            <nav class="left-sec-nav">
+                <ul>
+                    <a href="{% url "home_page" %}"><li>All</li></a>
+                    <a href="{% url "first_cate" %}"><li>{{ first_category_name }}</li></a>
+                    <a class="current-item" href="{% url "second_cate" %}"><li>{{ second_category_name }}</li></a>
+                    <a href="{% url "third_cate" %}"><li>{{ third_category_name }}</li></a>
+                    <a href="{% url "fourth_cate" %}"><li>{{ fourth_category_name }}</li></a>
+                    <a href="{% url "fifth_cate" %}"><li>{{ fifth_category_name }}</li></a>
+                </ul>
+            </nav>
+            <div class="community-all-cards">
+                {% for story in community_stories %}
+                <a href="{% url "post-details" story.story_category.slug story.slug  %}">
+                <div class="community-single-card">
+                    <div class="com-card-text">
+                        <h5 class="card-head">{{ story.story_heading }}</h5>
+                        <div class="author-image">
+                            <img class="author-pic" src="{% static "blog/images/author-img.jpg" %}" alt="">
+                            <h4>{{ story.author.first_name }} {{ story.author.last_name }}</h4>
+                            <div class="stroke"></div>
+                            <p>{{ story.date|date:"M d, Y"}}</p>
+                            <div class="circle"></div>
+                            <p>{{ story.wpm }} min read</p>
+                        </div>
+                        <p>{{ story.text_contents|truncatechars:170}}</p>
+                    </div>
+                    <img class="post-pic" src="{{ story.story_image.url }}" alt="{{ story.story_heading }}">
+                </div>
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="right-section">
+            <h3>Discover other interesting topics</h3>
+            <div class="all-tags">
+                {% for category in other_categories %}
+                <div class="tag">
+                    <a href="{% url "single-category" category.slug %}"><p>{{ category.category_name }}</p></a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% include "blog/includes/footer.html" %}
+
+{% endblock contents %}

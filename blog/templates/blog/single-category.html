@@ -1,0 +1,271 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block page_title %}{{ category.category_name }}{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/single-category.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% if user.is_authenticated %}
+
+{% include "blog/includes/nav-bar.html" %}
+
+{% else %}
+
+<nav class="nav-bar">
+        <a href="{% url "home_page" %}"><img src="{% static "blog/images/BuddyBlog.png" %}" alt="BuddyBlog-logo"></a>
+        <ul class="nav-links">
+            <li><a href="{% url "all-categories" %}">ALL CATEGORIES</a></li>
+            {% for category in nav_categories %}
+            <li><a href="{% url "single-category" category.slug %}">{{ category.category_name|upper }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div class="hero-login">
+            <a href="{% url "signin" %}">LOGIN</a>
+        </div>
+</nav>
+
+{% endif %}
+
+
+<section id="hero-section3">
+    <div class="hero-image">
+        <div class="hero-text">
+            <h1>{{ category.category_name }}</h1>
+            <div class="sub-text">
+                <p>{{ category.follower_count }} Followers</p>
+                <div class="circle"></div>
+                <p>{% total_stories category.category_name %} Stories</p>
+            </div>
+            {% if user.is_authenticated %}
+                {% if category in current_categories %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                <input type="hidden" name="unfollow-category" value="{{ category.id }}">
+                <button class="cate-btn">Unfollow</button>
+                </form>
+                {% else %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                <input type="hidden" name="new-category" value="{{ category.id }}">
+                <button class="cate-btn">Follow</button>
+                </form>
+                {% endif %}
+            {% else %}
+            <button class="cate-btn" type="button">Follow</button>
+            {% endif %}
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{{ category.category_image.url }}" alt="all-categories-image">
+    </div> 
+</section>
+
+<section id="recommended-stories">
+    <h2>Recommended Stories</h2>
+    <div class="trending-group">
+        {% for story in recommemended_stories  %}
+        <a href="{% url "post-details" category.slug story.slug  %}">
+        <div class="trending-card">
+            <div id="trending-image">
+                <img src="{{ story.story_image.url }}" alt="{{ story.story_heading }}">
+            </div>
+            <div class="trending-card-text">
+                    <h5 class="card-head">{{ story.story_heading }}</h5>
+                    <div class="author-image">
+                        <h4>{{ story.author.first_name }} {{ story.author.last_name }}</h4>
+                        <p>{{ story.date|date:"M d, Y"}}</p>
+                        <div class="circle"></div>
+                        <p>{{ story.wpm }} min read</p>
+                    </div>
+                    <p>{{ story.text_contents|truncatechars:140}}</p>
+                    <div class="icons-group">
+                        <div class="like-icon">
+                            <i class="fa-regular fa-heart" style="color: #0a0000;"></i>
+                            <p>110</p>
+                        </div>
+                        {% comment "" %}
+                        <div class="like-icon">
+                            <i class="fa-regular fa-comment-dots" style="color: #00040a;"></i>
+                            <p>{{ all_comments|length }}</p>
+                        </div>
+                        {% endcomment %}
+
+                    </div>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+
+       
+    </div>
+
+</section>
+
+{% if top_two_stories or latest_stories %}
+<section id="latest-stories">
+    <h2>Latest Stories</h2>
+    <div class="both-sections">
+        <div class="left-section">
+            {% for top_story in top_two_stories %}
+            <div class="left-card">
+                <img src="{{ top_story.story_image.url }}" alt="{{ top_story.story_heading }}">
+                <div class="author-image">
+                        <h4>{{ top_story.author.first_name }} {{ top_story.author.last_name }}</h4>
+                        <p>{{ top_story.date|date:"M d, Y"}}</p>
+                        <div class="circle"></div>
+                        <p>{{ top_story.wpm }} min read</p>
+                </div>
+                <h4>{{ top_story.story_heading }}</h4>
+                <p class="content">{{ top_story.text_contents|truncatechars:180}}</p>
+                <a href="{% url "post-details" category.slug top_story.slug  %}">Read post</a>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="right-section">
+            <h3>More reads</h3>
+            {% for latest_story in latest_stories %}
+            <a href="{% url "post-details" category.slug latest_story.slug  %}">
+            <div class="reads-all-cards">
+                <div class="read-card">
+                    <img src="{{ latest_story.story_image.url }}" alt="{{ latest_story.story_heading }}">
+                    <div class="text">
+                        <h3>{{ latest_story.story_heading }}</h3>
+                        <div class="author-image">
+                            <h4>{{ latest_story.author.first_name }} {{ latest_story.author.last_name }}</h4>
+                            <p>{{ top_story.date|date:"M d, Y"}}</p>
+                            <div class="circle"></div>
+                             <p>{{ top_story.wpm }} min read</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </a>
+            {% endfor %}
+           
+        </div>
+
+    </div>
+
+    <div class="page-button-group">
+        <a href="">
+        <div class="page-buttons">
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+        </div>
+        </a>
+        <a href="">
+        <div class="page-buttons">
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+        </a>
+
+    </div>
+<section>
+{% endif %}
+
+
+<section id="top-bloggers">
+    <h2>Top bloggers to follow</h2>
+    <div class="all-bloggers">
+        {% if user.is_authenticated %}
+        {% for following in authors_to_show %}
+        <form action="" method="POST">
+            {% csrf_token %}
+        <div class="blogger">
+            <input type="hidden" name="author-to-follow" value="{{ following.user.id }}">
+            <div class="blogger-image">
+                {% if following.user.profile_picture %}
+                <img src="{{ following.user.profile_picture.url }}" alt="">
+                {% else %}
+                <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                {% endif %}
+                <div class="name">
+                    <h5>{{ following.user.first_name }} {{ following.user.last_name }}</h5>
+                </div>
+            </div>
+                {% if following.user.bio %}
+                <p>{{ following.user.bio|truncatechars:80 }}</p>
+                {% else %}
+                <p></p>
+                {% endif %}
+            <button id="follower-btn">Follow</button>
+        </div>
+        </form>
+        {% endfor %}
+
+        {% else %}
+
+        {% for blogger in authors_to_show %}
+        <div class="blogger">
+            <div class="blogger-image">
+                {% if blogger.profile_picture. %}
+                <img src="{{ blogger.profile_picture.url }}" alt="">
+                {% else %}
+                <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                {% endif %}
+                <div class="name">
+                    <h5>{{ blogger.first_name }} {{ blogger.last_name }}</h5>
+                </div>
+            </div>
+            {% if blogger.bio %}
+            <p>{{ blogger.bio }}</p>
+            {% else %}
+            <p></p>
+            {% endif %}
+            <button id="follower-btn" type="button">Follow</button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+     <div class="page-button-group">
+        <a href="">
+        <div class="page-buttons">
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+        </div>
+        </a>
+        <a href="">
+        <div class="page-buttons">
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+        </a>
+
+    </div>
+
+</section>
+
+<section id="footer">
+    <div class="footer-text">
+        <div class="developer-name">
+            <h4>Designed & Developed by</h4>
+            <h4>Abraham Esio</h4>
+        </div>
+        <div class="social-handles">
+            <h4>Our Socials</h4>
+            <div class="social-logo">
+                <i class="fa-brands fa-facebook" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-x-twitter" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-instagram" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-youtube" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-behance" style="color: #ffffff;"></i>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock contents %}

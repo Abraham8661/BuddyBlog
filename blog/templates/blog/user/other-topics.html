@@ -1,0 +1,108 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}All topics{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/other-topics.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<section id="who-to-follow-section">
+    <div class="hero-image">
+        <div id="home-nav2">
+            <nav class="nav-bar">
+            <a href="{% url "user_home" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+            <h6>Good morning, Abraham!</h6>
+            <div class="right-section">
+                <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+                <a class="share-story-btn" href=""><i class="fa-solid fa-feather" style="color: #ffffff;"></i>Share your story</a>
+                <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
+                <img src="{% static "blog/images/author-img.jpg" %}" alt="">
+            </div>  
+            </nav>
+        </div>
+
+        <div class="hero-text">
+            <h1>EXPLORE DIVERSE STORIES</h1>
+            <p>You can never run out of interesting stories on BuddyBlog!</p>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/all-categories.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+<section id="all-categories-cards">
+    <div class="single-category-card">
+        <img src="{% static "blog/images/card-img.png" %}" alt="single-category-image">
+        <div class="category-name">
+            <h4>Lifestyles</h4>
+            <p>1.2k Stories</p>
+        </div>
+        <p>lit. Phasellus aliquet nibh id iaculis pharetra. Maecenas  
+            eleifend sed ex.</p>
+
+        <a href="{% url "single-category" "single" %}">Explore</a>
+    </div>
+    <div class="single-category-card">
+        <img src="{% static "blog/images/card-img.png" %}" alt="single-category-image">
+        <div class="category-name">
+            <h4>Lifestyles</h4>
+            <p>1.2k Stories</p>
+        </div>
+        <p>lit. Phasellus aliquet nibh id iaculis pharetra. Maecenas  
+            eleifend sed ex.</p>
+
+        <a href="">Explore</a>
+    </div>
+    <div class="single-category-card">
+        <img src="{% static "blog/images/card-img.png" %}" alt="single-category-image">
+        <div class="category-name">
+            <h4>Lifestyles</h4>
+            <p>1.2k Stories</p>
+        </div>
+        <p>lit. Phasellus aliquet nibh id iaculis pharetra. Maecenas  
+            eleifend sed ex.</p>
+
+        <a href="">Explore</a>
+    </div>
+    <div class="single-category-card">
+        <img src="{% static "blog/images/card-img.png" %}" alt="single-category-image">
+        <div class="category-name">
+            <h4>Lifestyles</h4>
+            <p>1.2k Stories</p>
+        </div>
+        <p>lit. Phasellus aliquet nibh id iaculis pharetra. Maecenas  
+            eleifend sed ex.</p>
+
+        <a href="">Explore</a>
+    </div>
+    <div class="single-category-card">
+        <img src="{% static "blog/images/card-img.png" %}" alt="single-category-image">
+        <div class="category-name">
+            <h4>Lifestyles</h4>
+            <p>1.2k Stories</p>
+        </div>
+        <p>lit. Phasellus aliquet nibh id iaculis pharetra. Maecenas  
+            eleifend sed ex.</p>
+
+        <a href="">Explore</a>
+    </div>
+    <div class="single-category-card">
+        <img src="{% static "blog/images/card-img.png" %}" alt="single-category-image">
+        <div class="category-name">
+            <h4>Lifestyles</h4>
+            <p>1.2k Stories</p>
+        </div>
+        <p>lit. Phasellus aliquet nibh id iaculis pharetra. Maecenas  
+            eleifend sed ex.</p>
+
+        <a href="">Explore</a>
+    </div>
+   
+
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+{% endblock contents %}

@@ -1,0 +1,118 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}My Drafts{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/drafts.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% include "blog/includes/nav-bar.html" %}
+
+<section class="author-profile">
+    <div class="left-section">
+        <img src="{% static "blog/images/author-cover.png" %}" alt="">
+        <h3>Blockchain Hub</h3>
+        <div class="text-and-btn">
+            <div class="author-bio">
+                <p>Aenean eleifend ante maecenas pulvinar montes lorem et pede dis 
+                    dolor pretium donec dictum. Vici consequat justo enim. Venenatis 
+                    eget adipiscing luctus lorem. Aenean eleifend ante maecenas 
+                    pulvinar montes lorem et pede dis dolor pretium </p>
+            </div>
+            <a class="follow-btn" href="{% url "edit-profile" %}">Edit profile</a>
+        </div>
+        <div class="follow-status">
+            <a href="{% url "follower" %}"><h5>2,000 followers</h5></a>
+            <a href="{% url "following" %}"><h5>500 following</h5></a>
+        </div>
+
+        <nav class="left-sec-nav">
+                <ul>
+                    <a href="{% url "user-profile" %}"><li>Story Shelf (55 Stories)</li></a>
+                    <a class="current-item" href=""><li>Drafts (11)</li></a>
+                    <a href="{% url "my-collections" %}"><li>My Collections</li></a>
+                </ul>
+        </nav>
+
+        <div class="community-all-cards">
+            <a class="community-single-card" href="">
+                <div class="com-card-text">
+                    <h5 class="card-head">Integer Maecenas Eget Integer Maecenas Eget</h5>
+                    <div class="author-image">
+                        <p>2 days ago</p>
+                    </div>
+                    <p>Aenean eleifend ante maecenas pulvinar montes lorem et pede 
+                    dis dolor pretium donec dictum. Vici consequat justo enim. 
+                    Venenatis eget adipiscing luctus lorem.</p>
+                    <i class="fa-solid fa-ellipsis" style="color: #00040a;"></i>
+                </div>
+                <div class="post-img">
+                    <img src="{% static "blog/images/post-img.png" %}" alt="">
+                </div>
+            </a>
+            
+            
+        </div>
+    </div>
+
+    <div class="right-section">
+        
+        <div class="who-to-follow">
+            <h3>Who you are following</h3>
+            <div class="all-follow">
+                <div class="single-follow">
+                    <div class="author-image">
+                        <a href="{% url "author-profile" %}">
+                        <img src="{% static "blog/images/author-img.jpg" %}" alt="">
+                        </a>
+                        <h5>John Paul</h5>
+                    </div>
+                    <p>lit. Phasellus aliquet nibh id iaculis Maecenas  eleifend sed ex. Donec</p>
+                    <a class="follow-btn" href="">Unfollow</a>
+                </div>
+                <div class="single-follow">
+                    <div class="author-image">
+                        <a href="{% url "author-profile" %}">
+                        <img src="{% static "blog/images/author-img.jpg" %}" alt="">
+                        </a>
+                        <h5>John Paul</h5>
+                    </div>
+                    <p>lit. Phasellus aliquet nibh id iaculis Maecenas  eleifend sed ex. Donec</p>
+                    <a class="follow-btn" href="">Unfollow</a>
+                </div>
+                <a id="see-more-followers-btn" href="{% url "who-to-follow" %}">See more</a>
+            </div>
+        </div>
+
+        <div class="my-collections">
+            <h3>My Collections</h3>
+            <div class="all-collections">
+                <div class="one-collection">
+                    <img src="{% static "blog/images/author-cover.png" %}" alt="">
+                    <div class="collection-text">
+                        <h4>Dcomm Ambassdor Program</h4>
+                        <p>10 stories</p>
+                    </div>
+                </div>
+                <div class="one-collection">
+                    <img src="{% static "blog/images/author-cover.png" %}" alt="">
+                    <div class="collection-text">
+                        <h4>Dcomm Ambassdor Program</h4>
+                        <p>10 stories</p>
+                    </div>
+                </div>
+
+                <a id="see-more-followers-btn" href="{% url "who-to-follow" %}">See more</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+{% endblock contents %}

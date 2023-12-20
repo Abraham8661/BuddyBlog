@@ -1,0 +1,73 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block page_title %}All Categories{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/all-categories.css" %}">
+<link rel="stylesheet" href="{% static "blog/other-topics.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% if user.is_authenticated %}
+
+{% include "blog/includes/nav-bar.html" %}
+<section id="who-to-follow-section">
+    <div class="hero-image">
+        <div class="hero-text">
+            <h1>EXPLORE DIVERSE STORIES</h1>
+            <p>You can never run out of interesting stories on BuddyBlog!</p>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/all-categories.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+{% else %}
+
+<section id="hero-section2">
+    <div class="hero-image">
+        <nav class="nav-bar">
+        <a href="{% url "home_page" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        <ul class="nav-links">
+            <li><a href="{% url "all-categories" %}">ALL CATEGORIES</a></li>
+            {% for category in nav_categories %}
+            <li><a href="{% url "single-category" category.slug %}">{{ category.category_name|upper }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href=""></a>
+        <div id="hero-login-all-cate">
+            <a href="">LOGIN</a>
+        </div>
+        </nav>
+        <div class="hero-text">
+            <h1>EXPLORE DIVERSE STORIES</h1>
+            <P>You can never run out of interesting stories on BuddyBlog!</P>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/all-categories.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+{% endif %}
+
+
+<section id="all-categories-cards">
+    {% for cate in categories  %}
+    <div class="single-category-card">
+        <img src="{{ cate.category_image.url }}" alt="{{ cate.category_name }}">
+        <div class="category-name">
+            <h4>{{ cate.category_name }}</h4>
+            <p>{% total_stories cate.category_name %} Stories</p>
+        </div>
+        <p>{{ cate.short_description }}</p>
+
+        <a href="{% url "single-category" cate.slug %}">Explore</a>
+    </div>
+    {% endfor %}
+   
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+{% endblock contents %}

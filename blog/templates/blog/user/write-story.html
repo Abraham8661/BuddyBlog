@@ -1,0 +1,182 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Share your story{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/write-story.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<form action="" class="share-story-form" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+<div id="home-nav">
+        <nav class="nav-bar">
+        <a href="{% url "user_home" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        <h6>{{ greeting }}, {{ user.first_name }}!</h6>
+        <div class="right-section">
+            <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+            <button id="publish-btn" type="button"><i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>Publish story</button>
+            <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            <a href="{% url "user-profile" %}"><img src="{% static "blog/images/author-img.jpg" %}" alt=""></a>
+        </div>  
+        </nav>
+</div>
+
+<div class="story-contents">
+    <input class="title" type="text" required name="story-title" placeholder="Story Heading" required>
+    <input class="subtitle" type="text" name="story-subtitle" placeholder="Story Subtitle">
+    <div id="imagePreview"></div>
+    <div class="story-cover">
+      <h3>Story Cover Photo</h3>
+      <input id="imageInput" onchange="previewImage()" type="file" name="story-cover-image" placeholder="Story Subtitle" accept="image/*">
+    </div>
+    <textarea class="contents-box" name="story-contents" id="" cols="30" rows="10" placeholder="Share your story here ..." required></textarea>
+</div>
+
+<div id="cate-dialog">
+  <div class="cate-box">
+
+    <div class="story-details">
+      <h5>Story Title: </h5>
+      <button type="button" id="cancel-btn2"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="all-cate">
+      <label for="category">Select story category</label>
+      <select id="category" name="category">
+        <option disabled selected value>Choose a category</option>
+        {% for category in categories %}
+        <option value="{{ category.category_name }}">{{ category.category_name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="tag">Choose at least two tags</label>
+      <div class="all-tags">
+        <select id="post-tag" name="post-tag1">
+        <option disabled selected value>Choose a tag</option>
+        {% for tag in tags %}
+          <option value="{{ tag.tag_name }}">{{ tag.tag_name }}</option>
+        {% endfor %}
+        </select>
+
+        <select id="post-tag" name="post-tag2">
+        <option disabled selected value>Choose a tag</option>
+        {% for tag in tags %}
+          <option value="{{ tag.tag_name }}">{{ tag.tag_name }}</option>
+        {% endfor %}
+        </select>
+
+        <select id="post-tag" name="post-tag3">
+        <option disabled selected value>Choose a tag</option>
+        {% for tag in tags %}
+          <option value="{{ tag.tag_name }}">{{ tag.tag_name }}</option>
+        {% endfor %}
+        </select>
+
+        <select id="post-tag" name="post-tag4">
+        <option disabled selected value>Choose a tag</option>
+        {% for tag in tags %}
+          <option value="{{ tag.tag_name }}">{{ tag.tag_name }}</option>
+        {% endfor %}
+        </select>
+
+        <select id="post-tag" name="post-tag5">
+        <option disabled selected value>Choose a tag</option>
+        {% for tag in tags %}
+          <option value="{{ tag.tag_name }}">{{ tag.tag_name }}</option>
+        {% endfor %}
+        </select>
+        
+
+        {% comment "" %}
+        <div class="single-tag">
+          <input type="checkbox" name="post-tag" value="{{ tag.tag_name }}">
+          <label for="tag">{{ tag.tag_name }}</label>
+        </div>
+        {% endcomment %}
+
+      </div>
+    </div>
+
+    <div class="new-tags-group">
+      <label for="category">Tag not found? Add a new tag</label>
+      <div class="all-new-tags">
+          <input type="text" name="new-tag1" placeholder="Your tag name">
+          <input type="text" name="new-tag2" placeholder="Your tag name">
+          <input type="text" name="new-tag3" placeholder="Your tag name">
+      </div>
+    </div>
+
+    <button class="share-story-btn2"><i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>Publish story</button>
+    
+  </div>
+  
+</div>
+
+<div id="publish-dialog"></div>
+
+
+</form>
+
+
+ <script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+
+  <script>
+        var publish_botton = document.getElementById("publish-btn");
+        var cate_dialog = document.getElementById("cate-dialog");
+        var publish_dialog = document.getElementById("publish-dialog");
+        var cancel_btn = document.getElementById("cancel-btn2");
+
+         // Add event listener to the checkbox
+        publish_botton.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (publish_botton.click) {
+            publish_dialog.style.display = "flex";
+            cate_dialog.style.display = "flex";
+          } else {
+            publish_dialog.style.display = "none";
+            cate_dialog.style.display = "none";
+          }
+        });
+       
+        cancel_btn.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (cancel_btn.click) {
+            publish_dialog.style.display = "none";
+            cate_dialog.style.display = "none";
+          } else {
+            publish_dialog.style.display = "none";
+            cate_dialog.style.display = "none";
+          }
+        });
+
+    </script>
+
+{% endblock contents %}

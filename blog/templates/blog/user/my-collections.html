@@ -1,0 +1,111 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}My Collections{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/my-collections.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% include "blog/includes/nav-bar.html" %}
+
+<section class="author-profile">
+    <div class="left-section">
+        <img src="{% static "blog/images/author-cover.png" %}" alt="">
+        {% if user_profile.profile_display_name %}
+        <h3>{{ user_profile.profile_display_name }}</h3>
+        {% else %}
+        <h3>{{ user.first_name }} {{ user.last_name }} Blog</h3>
+        {% endif %}
+        <div class="text-and-btn">
+            <div class="author-bio">
+                {% if user.bio  %}
+                <p>{{ user.bio }}</p>
+                {% else %}
+                <p>Your Bio here! Edit your profile to tell us briefly about you.</p>
+                {% endif %}
+            </div>
+            <a class="follow-btn" href="{% url "edit-profile" %}">Edit profile</a>
+        </div>
+        <div class="follow-status">
+            <a href="{% url "follower" %}"><h5>{{ user_profile.followers.all|length }} followers</h5></a>
+            <a href="{% url "following" %}"><h5>{{ user_profile.following.all|length }} following</h5></a>
+        </div>
+
+        <nav class="left-sec-nav">
+                <ul>
+                    <a href="{% url "user-profile" user_profile.user.profile_link %}"><li>Story Shelf ({{ all_stories|length }} Stories)</li></a>
+                    <a class="current-item" href=""><li>My Collections</li></a>
+                </ul>
+        </nav>
+        
+        {% if my_collections %}
+        <div class="reading-list">
+            {% for story in my_collections %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="collection-story-id" value="{{ story.id }}">
+            <div class="one-list">
+                <a href="{% url "post-details" story.story_category.slug story.slug %}">
+                <div class="collection-text">
+                    <h4>{{ story.story_heading }}</h4>
+                    <div class="story-sec">
+                        <p>{{ story.author.first_name }} {{ story.author.last_name }}</p>
+                </a>
+                        <button><i class="fa-solid fa-circle-minus" style="color: #00040a;"></i></button>
+                    </div>
+                </div>
+                <img src="{{ story.story_image.url }}" alt="">
+            </div>
+            </form>
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <p>No story has been saved yet</p>
+        {% endif %}
+
+    </div>
+
+    <div class="right-section">
+        
+        {% if user_profile.following.all %}
+        <div class="who-to-follow">
+            <h3>Who you are following</h3>
+            <div class="all-follow">
+                {% for following in user_profile.following.all|slice:":3" %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                <div class="single-follow">
+                    <input type="hidden" name="author-to-unfollow" value="{{ following.user.id }}">
+                    <div class="author-image">
+                        <a href="{% url "author-profile" following.user.username %}">
+                            {% if following.user.profile_picture %}
+                            <img src="{{ following.user.profile_picture.url }}" alt="">
+                            {% else %}
+                            <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                            {% endif %}
+                        </a>
+                        <h5>{{ following.user.first_name }} {{ following.user.last_name }}</h5>
+                    </div>
+                    {% if following.user.bio %}
+                    <p>{{ following.user.bio|truncatechars:80 }}</p>
+                    {% endif %}
+                    <button class="unfollow-btn">Unfollow</button>
+                </div>
+                </form>
+                {% endfor %}
+                <a id="see-more-followers-btn" href="{% url "who-to-follow" %}">See more</a>
+            </div>
+        </div>
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+{% endblock contents %}

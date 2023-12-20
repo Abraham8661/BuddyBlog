@@ -1,0 +1,300 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}{{ story.story_heading }}{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/post-details.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% if user.is_authenticated %}
+
+{% include "blog/includes/nav-bar.html" %}
+
+<section id="hero-section4">
+    <div class="hero-image">
+        <div class="redirect-link">
+            <a href="{% url "home_page" %}">Home <i class="fa-solid fa-chevron-right"></i></a>
+            <a href="{% url "single-category" story.story_category.slug %}">{{ story.story_category.category_name }} <i class="fa-solid fa-chevron-right"></i></a>
+            <a href="">{{ story.story_heading }}</a>
+        </div>
+
+        <div class="hero-text">
+            <h1>{{ story.story_heading }}</h1>
+            <p>{{ story.story_subtitle }}</p>
+        </div>
+        <div id="author-text-details">
+            <h4>By {{ story.author.first_name }} {{ story.author.last_name }}</h4>
+            <div class="stroke"></div>
+            <p><i class="fa-regular fa-calendar" style="color: #ffffff;"></i> {{ story.date|date:"M d, Y"}}</p>
+            <div class="circle"></div>
+            <p><i class="fa-regular fa-clock" style="color: #ffffff;"></i>{{ story.wpm }} min read</p>
+            <p><i class="fa-solid fa-chart-simple" style="color: #ffffff;"></i>1.6k views</p>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/post-img.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+{% else %}
+
+<section id="hero-section4">
+    <div class="hero-image">
+        <nav class="nav-bar">
+        <a href="{% url "home_page" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        <ul class="nav-links">
+            <li><a href="{% url "all-categories" %}">ALL CATEGORIES</a></li>
+            {% for category in nav_categories %}
+            <li><a href="{% url "single-category" category.slug %}">{{ category.category_name|upper }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href=""><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+        <div class="hero-login">
+            <a href="{% url "signin" %}">LOGIN</a>
+        </div>
+        </nav>
+
+        <div class="redirect-link">
+            <a href="{% url "home_page" %}">Home <i class="fa-solid fa-chevron-right"></i></a>
+            <a href="{% url "single-category" story.story_category.slug %}">{{ story.story_category.category_name }} <i class="fa-solid fa-chevron-right"></i></a>
+            <a href="">{{ story.story_heading }}</a>
+        </div>
+
+        <div class="hero-text">
+            <h1>{{ story.story_heading }}</h1>
+            <p>{{ story.story_subtitle }}</p>
+        </div>
+        <div id="author-text-details">
+            <h4>By {{ story.author.first_name }} {{ story.author.last_name }}</h4>
+            <div class="stroke"></div>
+            <p><i class="fa-regular fa-calendar" style="color: #ffffff;"></i> {{ story.date|date:"M d, Y"}}</p>
+            <div class="circle"></div>
+            <p><i class="fa-regular fa-clock" style="color: #ffffff;"></i>{{ story.wpm }} min read</p>
+            <p><i class="fa-solid fa-chart-simple" style="color: #ffffff;"></i>1.6k views</p>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/post-img.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+{% endif %}
+
+<section id="post-contents">
+    <div class="right-section">
+        <div class="details">
+            <p>{{ story.text_contents|linebreaksbr}}</p>
+        </div>
+
+        {% if user.is_authenticated %}
+        <form action="" class="comment-form" method="POST">
+        <div class="comment-box">
+            <h4>Leave a Comment</h4>
+                {% csrf_token %}
+                <input type="hidden" name="user-id" value="{{ user.id }}">
+                <input type="hidden" name="story-id" value="{{ story.id }}">
+                <textarea name="comment" id="" cols="30" rows="10" placeholder="Your comment here..."></textarea>
+            <button class="post-comment-btn" >Post Comment</button>
+        </div>
+        </form>
+        {% else %}
+        <form action="{% url "signin" %}" class="comment-form">
+        <div class="comment-box">
+            <h4>Leave a Comment</h4>
+                {% csrf_token %}
+                <textarea name="comment" id="" cols="30" rows="10" placeholder="Your comment here..."></textarea>
+            <button class="post-comment-btn" >Post Comment</button>
+        </div>
+        </form>
+        {% endif %}
+        <button id="view-comment-btn">View Comments [{{ all_comments|length }}]</button>
+
+        {% if all_comments %}
+        <div id="all-comments">
+            {% for comment in all_comments %}
+            <div class="user-comment">
+                <div class="commenter">
+                    {% if comment.user.profile_picture %}
+                    <img src="{{ comment.user.profile_picture.url }}" alt="">
+                    {% else %}
+                    <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                    {% endif %}
+                    <h6>{{ comment.user.first_name }} {{ comment.user.last_name }}</h6>
+                </div>
+                <div class="comment-details">
+                    <p class="comment-date">{{ comment.date|date:"M d, Y"}}</p>
+                    <p>{{ comment.comment }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        <button id="hide-comment-btn">Hide Comments [{{ all_comments|length }}]</button>
+        {% endif %}
+    </div>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+    <div class="left-contents">
+        <div class="author-card">
+            <h5>AUTHOR</h5>
+            <input type="hidden" name="author-to-unfollow" value="{{ story.author.id }}">
+            <h6>{{ story.author.first_name }} {{ story.author.last_name }}</h6>
+            <img src="{% static "blog/images/author-img.jpg" %}" alt="">
+            {% if story.author.bio %}
+            <p>{{ story.author.bio|truncatechars:170 }}</p>
+            {% endif %}
+            {% if user.is_authenticated %}
+            {% if story.author.id != user.id %}
+                {% if story.author.id in user_following %}
+                <button class="unfollow-btn">Unfollow</button>
+    </form>
+                {% else %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="author-to-follow" value="{{ story.author.id }}">
+                    <button class="unfollow-btn">Follow</button>
+                </form>
+                {% endif %}
+            {% endif %}
+            {% else %}
+            <button type="button" class="unfollow-btn">Follow</button>
+            {% endif %}
+        </div>
+     
+
+
+        {% if author_stories %}
+        <div class="author-latest">
+            <h5>Latest From {{ story.author.first_name }}</h5>
+            <div class="latest-all">
+                
+                {% for author_story in author_stories %}
+                <a href="{% url "post-details" category.slug author_story.slug  %}">
+                <div class="latest-single">
+                    <img src="{{ author_story.story_image.url }}" alt="">
+                    <h6>{{ author_story.story_heading }}</h6>
+                    <div id="author-text-details2">
+                        <p>{{ story.date|date:"M d, Y"}}</p>
+                        <div class="stroke"></div>
+                        <p><i class="fa-regular fa-clock" style="color: #000;"></i>{{ author_story.wpm }} min read</p>
+                    </div>
+                </div>
+                </a>
+                {% endfor %}
+               
+
+            </div>
+
+        </div>
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<section id="other-stories">
+    <h2>You may also like</h2>
+    <div class="trending-group">
+        {% for relevant_story in relevant_stories %}
+        <a href="{% url "post-details" category.slug relevant_story.slug  %}">
+        <div class="trending-card">
+            <div id="trending-image">
+                <img src="{{ relevant_story.story_image.url }}" alt="card-img">
+            </div>
+            <div class="trending-card-text">
+                    <h5 class="card-head">{{ relevant_story.story_heading }}</h5>
+                    <div class="author-image">
+                        <h4>{{ relevant_story.author.first_name }} {{ relevant_story.author.last_name }}</h4>
+                        <p>{{ relevant_story.date|date:"M d, Y"}}</p>
+                        <div class="circle"></div>
+                        <p>{{ relevant_story.wpm }} min read</p>
+                    </div>
+                    <p>{{ relevant_story.text_contents|truncatechars:180}}</p>
+                    <div class="icons-group">
+                        <div class="like-icon">
+                            <i class="fa-regular fa-heart" style="color: #0a0000;"></i>
+                            <p>110</p>
+                        </div>
+                        <div class="like-icon">
+                            <i class="fa-regular fa-comment-dots" style="color: #00040a;"></i>
+                            <p>110</p>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+
+    </div>
+
+    <div class="page-button-group">
+        <a href="">
+        <div class="page-buttons">
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+        </div>
+        </a>
+        <a href="">
+        <div class="page-buttons">
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+        </a>
+
+    </div>
+
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+
+<script>
+        var show_comment_btn = document.getElementById("view-comment-btn");
+        var hide_comment_btn = document.getElementById("hide-comment-btn");
+        var comment_box = document.getElementById("all-comments");
+        var cancel_button = document.getElementById("cancel-btn");
+
+         // Add event listener to the checkbox
+       show_comment_btn.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (show_comment_btn.click) {
+            comment_box.style.display = "flex";
+            show_comment_btn.style.display = "none";
+            hide_comment_btn.style.display = "flex";
+          } else {
+           comment_box.style.display = "none";
+           show_comment_btn.style.display = "flex";
+           hide_comment_btn.style.display = "none";
+          }
+        });
+       hide_comment_btn.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (hide_comment_btn.click) {
+            comment_box.style.display = "none";
+            show_comment_btn.style.display = "flex";
+            hide_comment_btn.style.display = "none";
+          } else {
+           comment_box.style.display = "flex";
+           show_comment_btn.style.display = "none";
+          }
+        });
+
+        
+       
+        cancel_button.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (cancel_button.click) {
+            menu_area.style.display = "none";
+          } else {
+            menu_area.style.display = "none";
+          }
+        });
+
+    </script>
+
+{% endblock contents %}

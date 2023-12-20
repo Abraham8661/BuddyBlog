@@ -1,0 +1,64 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Search{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/new_search.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+{% include "blog/includes/nav-bar.html" %}
+
+<section class="section">
+        <form action="" method="get" class="search-form">
+        <input type="text" placeholder="Search stories, authors and categories here ...", value="{{ search_query }}" name="search-query">
+        <button>Search</button>
+        </form>
+</section>
+
+{% if search_query %}
+<section class="search-results">
+        <h3><span class="result">Results for</span> {{ search_query }}</h3>
+        <p>{{ stories|length }} results</p>
+
+        <nav class="left-sec-nav">
+            <ul>
+                <a  class="current-item" href="{% url "search" %}"><li>Stories</li></a>
+                <a href="{% url "author-search" %}"><li>Authors</li></a>
+                <a href="{% url "category-search" %}"><li>Categories</li></a>
+            </ul>
+        </nav>
+
+        <div class="community-all-cards">
+                {% for story in stories %}
+                <div class="community-single-card">
+                    <div class="com-card-text">
+                        <a href="{% url "post-details" story.story_category.slug story.slug  %}">
+                        <h5 class="card-head">{{ story.story_heading }}</h5>
+                        </a>
+                        <div class="author-image">
+                            <img class="author-pic" src="{% static "blog/images/author-img.jpg" %}" alt="">
+                            <h4>{{ story.author.first_name }} {{ story.author.last_name }}</h4>
+                            <div class="stroke"></div>
+                            <p>{{ story.date|date:"M d, Y"}}</p>
+                            <div class="circle"></div>
+                            <p>{{ story.wpm }} min read</p>
+                        </div>
+                        <p>{{ story.text_contents|truncatechars:140}}</p>
+                    <form action="" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="story_id" value="{{ story.id }}">
+                        <button class="save-story-btn" ><i class="fa-regular fa-bookmark" style="color: #000205;"></i></button>
+                    </form>
+                    </div>
+                    <img class="post-pic" src="{{ story.story_image.url }}" alt="{{ story.story_heading }}">
+                </div>
+                {% endfor %}
+             
+
+            </div>
+
+</section>
+{% endif %}
+
+{% endblock contents %}

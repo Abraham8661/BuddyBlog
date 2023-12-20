@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    background: var(--Background, #F5F5F5);
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+
+.nav-bar img {
+    width: 7.625rem;
+    height: 3.25rem;
+    margin-left: 5rem;
+    margin-top: 2rem;
+}
+
+.onboarding {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.onboarding h4 {
+    font-size: 1.7rem;
+}
+
+.onboarding .topics-to-choose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    width: 40vw;
+}
+
+.onboarding .topics-to-choose .one-topic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: black;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    background-color: rgb(231, 228, 228);
+}
+
+.onboarding .topics-to-choose .one-topic:hover {
+    background-color: black;
+    color: white;
+}
+
+.onboarding .topics-to-choose #single-topic {
+    padding: 1rem 1rem;
+    border-radius: 1rem;
+}
+
+
+.onboarding button {
+    display: flex;
+    padding: 0.8rem 7rem;
+    width: 5rem;
+    color: #FFF;
+    font-size: 1rem;
+    flex-direction: column;
+    background-color: #421CAC;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.625rem;
+}
+
+.onboarding button:hover {
+    background-color: black;
+}

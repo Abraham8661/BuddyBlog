@@ -1,0 +1,64 @@
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/nav-bar.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+<div id="home-nav">
+        <nav class="nav-bar2">
+        <a href="{% url "user_home" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        <h6>{{ greeting }}, {{ user.first_name }}!</h6>
+        <div class="right-section">
+            <a href="{% url "search" %}"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+            <a class="share-story-btn" href="{% url "write-story" %}"><i class="fa-solid fa-feather" style="color: #ffffff;"></i>Share your story</a>
+            <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            {% if user.profile_picture %}
+            <img id="image-box" src="{{ user.profile_picture.url }}" alt="">
+            {% else %}
+            <img id="image-box" src="{% static "blog/images/blank-picture.png" %}" alt="">
+            {% endif %}
+            <div id="menu-dialog">
+                <button id="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
+    
+                <div class="menu-group">
+                    <a href="{% url "user-profile" user.profile_link %}">My Profile</a>
+                    <a href="{% url "logout" %}">Logout</a>
+                </div>
+
+            </div>
+        </div>  
+        </nav>
+</div>
+
+
+
+<script>
+        var menu_area = document.getElementById("menu-dialog");
+        var image_box = document.getElementById("image-box");
+        var cancel_button = document.getElementById("cancel-btn");
+
+         // Add event listener to the checkbox
+        image_box.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (image_box.click) {
+            menu_area.style.display = "block";
+          } else {
+            menu_area.style.display = "none";
+          }
+        });
+
+        
+       
+        cancel_button.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (cancel_button.click) {
+            menu_area.style.display = "none";
+          } else {
+            menu_area.style.display = "none";
+          }
+        });
+
+    </script>
+
+{% endblock contents %}

@@ -1,0 +1,59 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Notifications{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/notifications.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+{% include "blog/includes/nav-bar.html" %}
+
+<section class="both-sections">
+    <div class="left-section">
+        <h3>Notifications</h3>
+        <nav class="left-sec-nav">
+            <ul>
+                <a class="current-item" href=""><li>All</li></a>
+                <a href="{% url "story-reviews" %}"><li>Story Reviews</li></a>
+            </ul>
+        </nav>
+
+        <div class="all-notifications">
+            {% if all_notifications %}
+            {% for notification in all_notifications %}
+            <div class="notification">
+                {% comment "" %}
+                <img src="{% static "blog/images/author-img.jpg" %}" alt="">
+                {% endcomment %}
+                <div class="notify-text">
+                    <h5>{{ notification.message }}</h5>
+                    <p>{{ notification.date|date:"M d, Y" }}</p>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="notification-id" value="{{ notification.id }}">
+                    <button><i class="fa-regular fa-trash-can" style="color: #050505;"></i></button>
+                </form>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>You have no notifications currently</p>
+            {% endif %}
+ 
+        </div>
+
+
+    </div>
+    
+    <div class="right-section">
+        <img src="{% static "blog/images/bell icon.png" %}" alt="">
+
+
+    </div>
+
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+{% endblock contents %}

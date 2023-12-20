@@ -1,0 +1,207 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Welcome to BuddyBlog!{% endblock page_title %}
+{% block css_files %}
+{% comment "" %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+{% endcomment %}
+<link rel="stylesheet" href="{% static "blog/home.css" %}">
+<link rel="stylesheet" href="{% static "blog/alert.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% include "blog/includes/nav-bar.html" %}
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+{% endif %}
+
+
+
+
+<section id="user-blog">
+    <div class="community-items">
+        <div class="left-section">
+            {% if user_topics %}
+            <nav class="left-sec-nav">
+                <ul>
+                    <a class="add-circle" href=""><i class="fa-solid fa-plus" style="color: #00040a;"></i></a>
+                    <a class="current-item" href=""><li>All</li></a>
+                    {% for category in user_topics %}
+                    <a href="{% url "chosen_category" category.slug %}"><li>{{ category.category_name }}</li></a>
+                    {% endfor %}
+                    <a href=""><i class="fa-solid fa-chevron-left" style="color: #00040a;"></i></a>
+                    <a href=""><i class="fa-solid fa-chevron-right" style="color: #00040a;"></i></a>
+                </ul>
+            </nav>
+            {% endif %}
+            <div class="community-all-cards">
+                {% for story in stories %}
+                <div class="community-single-card">
+                    <div class="com-card-text">
+                        <a href="{% url "post-details" story.story_category.slug story.slug  %}">
+                        <h5 class="card-head">{{ story.story_heading }}</h5>
+                        </a>
+                        <div class="author-image">
+                            <img class="author-pic" src="{% static "blog/images/author-img.jpg" %}" alt="">
+                            <h4>{{ story.author.first_name }} {{ story.author.last_name }}</h4>
+                            <div class="stroke"></div>
+                            <p>{{ story.date|date:"M d, Y"}}</p>
+                            <div class="circle"></div>
+                            <p>{{ story.wpm }} min read</p>
+                        </div>
+                        <p>{{ story.text_contents|truncatechars:140}}</p>
+                    <form action="" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="story_id" value="{{ story.id }}">
+                        <button class="save-story-btn" ><i class="fa-regular fa-bookmark" style="color: #000205;"></i></button>
+                    </form>
+                    </div>
+                    <img class="post-pic" src="{{ story.story_image.url }}" alt="{{ story.story_heading }}">
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="right-section">
+            <div class="discover-more">
+                <h3>Discover other interesting topics</h3>
+                <div class="all-tags">
+                    {% for topic in other_categories %}
+                    <div class="tag">
+                        <a href="{% url "single-category" topic.slug %}"><p>{{ topic.category_name }}</p></a>
+                    </div>
+                    {% endfor %}
+                    
+                </div>
+                <a id="see-more-topics-btn" href="{% url "all-categories" %}">See more topics</a>
+
+            </div>
+            
+            {% if authors %}
+            <div class="who-to-follow">
+                <h3>Who to follow</h3>
+                <div class="all-follow">
+                    {% for author in authors|slice:":3" %}
+                    <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="single-follow">
+                        <input type="hidden" name="author-to-follow" value="{{ author.user.id }}">
+                        <div class="author-image">
+                            <a href="{% url "author-profile" author.user.username %}">
+                            {% if author.user.profile_picture %}
+                                <img src="{{ author.user.profile_picture.url }}" alt="{{ author.user.first_name }}">
+                            {% else %}
+                                <img src="{% static "blog/images/blank-picture.png" %}" alt="{{ author.first_name }}">
+                            {% endif %}
+                            </a>
+                            <h5>{{ author.user.first_name }} {{ author.user.last_name }}</h5>
+                        </div>
+                        {% if author.user.bio %}
+                        <p>{{ author.user.bio}}</p>
+                        {% endif %}
+                        <button type="submit" class="follow-btn">Follow</button>
+                    </div>
+                    </form>
+                    {% endfor %}
+                    
+                    
+
+                    <a id="see-more-followers-btn" href="{% url "who-to-follow" %}">See more</a>
+                </div>
+
+            </div>
+            {% endif %}
+
+            {% if saved_stories %}
+            <div class="recently-saved">
+                <h3>Recently Saved</h3>
+                <div class="all-saved-cards">
+                    {% for saved_story in saved_stories %}
+                    <a href="">
+                    <div class="single-card">
+                        <div class="author-image">
+                            <img src="{% static "blog/images/author-img.jpg" %}" alt="">
+                            <h5>{{ saved_story.author.first_name }} {{ saved_story.author.last_name }}</h5>
+                        </div>
+                        <h5>{{ saved_story.story_heading }}</h5>
+                        <div class="date-and-read">
+                            <p>{{ saved_story.date|date:"M d, Y"}}</p>
+                            <div class="circle"></div>
+                            <p>{{ saved_story.wpm }} min read</p>
+                        </div>
+                        
+                    </div>
+                    </a>
+                    {% endfor %}
+                   
+                    <a id="see-all-saved-btn" href="{% url "my-collections" %}">See all</a>
+
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div id="cate-dialog">
+        <div class="cate-box">
+                
+        <button class="share-story-btn2"><i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>Publish story</button>
+
+        </div>
+
+    </div>
+
+    <div id="publish-dialog"></div>
+</section>
+
+
+{% include "blog/includes/footer.html" %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+{% comment "" %}
+<script>
+        var publish_botton = document.getElementsByClassName("save-story-btn");
+        var cate_dialog = document.getElementById("cate-dialog");
+        var publish_dialog = document.getElementById("publish-dialog");
+        var cancel_btn = document.getElementById("cancel-btn2");
+
+         // Add event listener to the checkbox
+        for (var i = 0; i < publish_botton.length; i++) {
+            publish_botton[i].addEventListener("click", function() {
+              // If the checkbox is checked, show the text area; otherwise, hide it
+              if (publish_botton.click) {
+                publish_dialog[i].style.display = "flex";
+                cate_dialog[i].style.display = "flex";
+              } else {
+                publish_dialog[i].style.display = "none";
+                cate_dialog.style[i].display = "none";
+              }
+            });
+        }
+       
+        cancel_btn.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (cancel_btn.click) {
+            publish_dialog.style.display = "none";
+            cate_dialog.style.display = "none";
+          } else {
+            publish_dialog.style.display = "none";
+            cate_dialog.style.display = "none";
+          }
+        });
+
+    </script>
+{% endcomment %}
+{% endblock contents %}

@@ -1,0 +1,31 @@
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/index.css" %}">
+<link rel="stylesheet" href="{% static "blog/footer.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<section id="footer2">
+    <div class="footer-text">
+        <div class="developer-name">
+            <h4>Designed & Developed by</h4>
+            <h4>Abraham Esio</h4>
+        </div>
+        <div class="social-handles">
+            <h4>Our Socials</h4>
+            <div class="social-logo">
+                <i class="fa-brands fa-facebook" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-x-twitter" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-instagram" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-youtube" style="color: #ffffff;"></i>
+                <i class="fa-brands fa-behance" style="color: #ffffff;"></i>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock contents %}

@@ -1,0 +1,68 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Share your story{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/write-story.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<form action="" class="share-story-form">
+<div id="home-nav">
+        <nav class="nav-bar">
+        <a href="{% url "user_home" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        <h6>Good morning, Abraham!</h6>
+        <div class="right-section">
+            <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+            <button class="share-story-btn"><i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>Publish story</button>
+            <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
+            <a href="{% url "user-profile" %}"><img src="{% static "blog/images/author-img.jpg" %}" alt=""></a>
+        </div>  
+        </nav>
+</div>
+
+<div class="story-contents">
+    <input class="title" type="text" name="story-title" placeholder="Story Heading">
+    <input class="subtitle" type="text" name="story-subtitle" placeholder="Story Subtitle">
+    <div id="imagePreview"></div>
+    <input id="imageInput" onchange="previewImage()" type="file" name="story-subtitle" placeholder="Story Subtitle" accept="image/*">
+    <textarea class="contents-box" name="" id="" cols="30" rows="10" placeholder="Share your story here ..."></textarea>
+</div>
+
+<div>
+  
+</div>
+
+
+</form>
+
+
+ <script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+{% endblock contents %}

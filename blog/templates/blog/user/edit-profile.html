@@ -1,0 +1,106 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Edit profile{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/edit-profile.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+{% include "blog/includes/nav-bar.html" %}
+<section id="edit-profile-section">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="hero-image">
+        <div class="hero-text">
+            <h1>EDIT PROFILE</h1>
+            <div class="edit-icon">
+                <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
+            </div>
+            <div id="imagePreview">
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="">
+                {% else %}
+                <img src="{% static "blog/images/blank-picture.png" %}" alt="">
+                {% endif %}
+            </div>
+            <input id="imageInput" style="opacity:0%" onchange="previewImage()" type="file" name="profile-picture" accept="image/*" >
+
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/edit-profile.png" %}" alt="all-categories-image">
+    </div> 
+</section>
+
+<section class="account-info">
+    <nav class="left-sec-nav">
+        <ul>
+            <a class="current-item" href=""><li>Account Info</li></a>
+            <a href="{% url "settings" %}"><li>Settings</li></a>
+        </ul>
+    </nav>
+
+    <div class="profile-form">
+        <div class="form-control">
+            <label for="first-name">First Name</label>
+            <input type="text" name="first-name" placeholder="Enter your first name" value="{{ user.first_name }}">
+        </div>
+        <div class="form-control">
+            <label for="last-name">Last Name</label>
+            <input type="text" name="last-name" placeholder="Enter your last name" value="{{ user.last_name }}">
+        </div>
+        <div class="form-control">
+            <label for="email">Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email address" value="{{ user.email }}" disabled>
+        </div>
+        <div class="form-control">
+            <label for="last-name">Profile Display Name</label>
+            <input type="text" name="display-name" placeholder="Enter your profile display name" value="{{ profile.profile_display_name }}">
+        </div>
+        <div class="form-control-bio">
+            <label class="bio-label" for="bio">Your Bio</label>
+            <textarea name="bio" id="bio-input">{{ user.bio }}</textarea>
+        </div>
+        <button id="signin-form-btn">Save Changes</button>
+
+    </div>
+    </form>
+
+</section>
+
+
+
+
+
+
+{% include "blog/includes/footer.html" %}
+
+<script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+{% endblock contents %}

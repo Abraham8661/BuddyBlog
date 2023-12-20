@@ -1,0 +1,82 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Welcome to BuddyBlog!{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/onboarding.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+<section class="onboarding">
+    <h4>What are you interested in?</h4>
+    <p>Choose four topics</p>
+    <div class="topics-to-choose">
+        {% comment "" %}
+        <button id="topic-btn" type="button" class="one-topic" href="">Programming <i class="fa-solid fa-plus"></i></button>
+        {% endcomment %}
+        <select name="topic1" id="single-topic" required>
+            <option disabled selected value>Choose a topic</option>
+            {% for topic in topics %}
+            <option value="{{ topic.category_name }}">{{ topic.category_name }}</option>
+            {% endfor %}
+        </select>
+        <select name="topic2" id="single-topic" required>
+            <option disabled selected value>Choose a topic</option>
+            {% for topic in topics %}
+            <option value="{{ topic.category_name }}">{{ topic.category_name }}</option>
+            {% endfor %}
+        </select>
+        <select name="topic3" id="single-topic" required>
+            <option disabled selected value>Choose a topic</option>
+            {% for topic in topics %}
+            <option value="{{ topic.category_name }}">{{ topic.category_name }}</option>
+            {% endfor %}
+        </select>
+        <select name="topic4" id="single-topic" required>
+            <option disabled selected value>Choose a topic</option>
+            {% for topic in topics %}
+            <option value="{{ topic.category_name }}">{{ topic.category_name }}</option>
+            {% endfor %}
+        </select>
+
+
+      
+
+   
+    </div>
+
+    <button>Continue</button>
+
+</section>
+</form>
+
+
+<script>
+        var topic_btn = document.getElementById("topic-btn");
+        var input_box = document.getElementById("input1");
+        var cancel_button = document.getElementById("cancel-btn");
+
+         // Add event listener to the checkbox
+        topic_btn.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (topic_btn.click) {
+            topic_btn.style.border = "3px solid #421CAC";
+          } else {
+            topic_btn.style.border = "none";
+          }
+        });
+
+        cancel_button.addEventListener("click", function() {
+          // If the checkbox is checked, show the text area; otherwise, hide it
+          if (cancel_button.click) {
+            menu_area.style.display = "none";
+          } else {
+            menu_area.style.display = "none";
+          }
+        });
+
+</script>
+{% endblock contents %}

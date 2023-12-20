@@ -1,0 +1,48 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block page_title %}Sign In{% endblock page_title %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static "blog/login.css" %}">
+{% endblock css_files %}
+
+{% block contents %}
+
+<section id="login-section">
+    <div class="hero-image">
+        <nav class="nav-bar">
+        <a href="{% url "home_page" %}"><img src="{% static "blog/images/logo-white.png" %}" alt="BuddyBlog-logo"></a>
+        
+        </nav>
+        <div class="hero-text">
+            <h1>Your Companion for real stories</h1>
+            <P>Become part of the family to share your stories and meet follow authors like you!</P>
+        </div>
+        <div class="hero-overlay"></div>
+        <img src="{% static "blog/images/login-img.png" %}" alt="all-categories-image">
+    </div> 
+
+    <form class="login-form" action="" method="POST">
+        {% csrf_token %}
+        <h2>Hi, welcome back!</h2>
+        <a id="google-btn" href=""><i class="fa-brands fa-google"></i> Sign in with Google</a>
+        <p>Or use your email</p>
+        <div class="form-control">
+            <label for="email">Email</label>
+            <input type="text" name="email" placeholder="Enter your email address">
+        </div>
+        <div class="form-control">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Enter your password">
+        </div>
+        <button id="signin-form-btn">Sign in</button>
+        <a href="{% url "user_home" %}">Forgot Password?</a>
+
+    </form>
+
+
+
+
+
+
+{% endblock contents %}
