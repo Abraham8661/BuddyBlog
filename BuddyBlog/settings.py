@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--vcpgd1v4(r*3h%48z$$^(ec@iokl#d$o$&h=n@(3!5+349$9k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "buddy-blog-0e4cf9783a16.herokuapp.com", "127.0.0.1"
@@ -91,15 +91,27 @@ WSGI_APPLICATION = 'BuddyBlog.wsgi.application'
 #    }
 #}
 
+
+#DATABASES = {
+#   'default': {
+#       'ENGINE': 'django.db.backends.postgresql',
+#       'NAME': 'postgres',
+#       'USER': os.environ.get("BUDDY_USER"),
+#       'PASSWORD': os.environ.get("BUDDY_PASSWORD"),
+#       'HOST': os.environ.get("BUDDY_HOST"),
+#       'PORT': '5432',
+#   }
+#}
+
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'postgres',
-       'USER': os.environ.get("BUDDY_USER"),
-       'PASSWORD': os.environ.get("BUDDY_PASSWORD"),
-       'HOST': os.environ.get("BUDDY_HOST"),
-       'PORT': '5432',
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': os.environ.get('BUDDY_USER', 'default_user'),
+        'PASSWORD': os.environ.get('BUDDY_PASSWORD', 'default_password'),
+        'HOST': os.environ.get('BUDDY_HOST', 'localhost'),
+        'PORT': '5432',
+    }
 }
 
 # Password validation
@@ -157,10 +169,10 @@ AUTH_USER_MODEL = "users.User"
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-if os.getcwd() == "/app":
-    DEBUG = False
-else:
-    DEBUG = True
+#if os.getcwd() == "/app":
+#    DEBUG = False
+#else:
+#    DEBUG = True
 
 #DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
 
