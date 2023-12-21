@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--vcpgd1v4(r*3h%48z$$^(ec@iokl#d$o$&h=n@(3!5+349$9k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "buddy-blog-0e4cf9783a16.herokuapp.com", "127.0.0.1"
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'blog',
     'fontawesomefree',
     'users',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -83,48 +84,23 @@ WSGI_APPLICATION = 'BuddyBlog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
        'NAME': 'postgres',
-       'USER': 'postgres',
-       'PASSWORD': 'Abrahamesio1',
-       'HOST': 'database-1.cev1em5e7kai.us-east-1.rds.amazonaws.com',
+       'USER': os.environ.get("BUDDY_USER"),
+       'PASSWORD': os.environ.get("BUDDY_PASSWORD"),
+       'HOST': os.environ.get("BUDDY_HOST"),
        'PORT': '5432',
    }
 }
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'buddyblogapp',
-#        'USER': 'abrahamesio1',
-#        'PASSWORD': 'Abraham1',
-#        'HOST': 'buddy-1.cev1em5e7kai.us-east-1.rds.amazonaws.com',
-#        'POST': '5432',
-#    }
-#}
-
-#In Development
-
-#DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.postgresql',
-#       'NAME': 'buddy_blog',
-#       'USER': 'postgres',
-#       'PASSWORD': 'Mr.Abraham1@',
-#       'HOST': 'localhost',
-#       'PORT': '5432',
-#   }
-#}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -181,7 +157,16 @@ AUTH_USER_MODEL = "users.User"
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-#if os.getcwd() == "/app":
-#    DEBUG = False
-#else:
-#    DEBUG = True
+if os.getcwd() == "/app":
+    DEBUG = False
+else:
+    DEBUG = True
+
+#DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+
+AWS_QUERYSTRING_AUTH = False
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_BUDDY_BUCKET_NAME")
