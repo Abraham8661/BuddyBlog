@@ -21,10 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--vcpgd1v4(r*3h%48z$$^(ec@iokl#d$o$&h=n@(3!5+349$9k'
+
+SECRET_KEY = os.environ.get('SECRET_KEY'),
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "buddy-blog-0e4cf9783a16.herokuapp.com", "127.0.0.1"
@@ -91,17 +92,6 @@ WSGI_APPLICATION = 'BuddyBlog.wsgi.application'
 #    }
 #}
 
-
-#DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.postgresql',
-#       'NAME': 'postgres',
-#       'USER': os.environ.get("BUDDY_USER"),
-#       'PASSWORD': os.environ.get("BUDDY_PASSWORD"),
-#       'HOST': os.environ.get("BUDDY_HOST"),
-#       'PORT': '5432',
-#   }
-#}
 
 DATABASES = {
     'default': {
