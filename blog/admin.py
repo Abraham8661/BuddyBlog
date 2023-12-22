@@ -4,10 +4,10 @@ from .models import Story, Category, Tag, Profile,Collection, Comments, Profiles
 
 # Register your models here.
 
-#class StoryAdmin(admin.ModelAdmin):
-#    prepopulated_fields = {"slug": ("story_heading",)}
-#    list_filter = ("story_heading", "story_category", "date")
-#    list_display = ("story_heading", "author")
+class StoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("story_heading",)}
+    list_filter = ("story_heading", "story_category", "date")
+    list_display = ("story_heading", "author")
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("category_name",)}
@@ -24,7 +24,7 @@ class CategoryAdmin(admin.ModelAdmin):
 #admin.site.unregister(User)
 
 
-admin.site.register(Story)
+admin.site.register(Story, StoryAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag)
 admin.site.register(Profile)

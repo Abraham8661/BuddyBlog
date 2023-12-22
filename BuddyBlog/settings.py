@@ -159,10 +159,10 @@ AUTH_USER_MODEL = "users.User"
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-#if os.getcwd() == "/app":
-#    DEBUG = False
-#else:
-#    DEBUG = True
+if os.getcwd() == "/app":
+    DEBUG = False
+else:
+    DEBUG = True
 
 #DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
 

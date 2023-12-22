@@ -55,7 +55,7 @@ class Story(models.Model):
         super().save(**args)
     
     def __str__(self):
-        return str(self.story_subtitle)
+        return str(self.story_heading)
     
     #custom function to use in view
     def wpm(self):
