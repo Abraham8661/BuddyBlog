@@ -8,7 +8,7 @@ from django.utils import text
 class Category(models.Model):
     category_name = models.CharField(max_length=20, null=True, blank=False)
     short_description = models.CharField(max_length=150, null=True, blank=False)
-    category_image = models.ImageField(null=True, blank=True, upload_to="images")
+    category_image = models.ImageField(null=True, blank=False, upload_to="images")
     show_on_navigation_bar = models.BooleanField(default=False, help_text="No=Don't show, Yes=Show", null=True)
     follower_count = models.IntegerField(default=0, null=True)
     date = models.DateField(auto_now_add=True, null=True)
@@ -34,7 +34,7 @@ class Tag(models.Model):
 class Story(models.Model):
     story_heading = models.CharField(max_length=100, null=False, blank=False)
     story_subtitle = models.CharField(max_length=100, null=False, blank=True)
-    story_image = models.ImageField(null=False, blank=True, upload_to="images")
+    story_image = models.ImageField(null=False, blank=False, upload_to="images")
     text_contents = models.TextField(max_length=20000, null=False, blank=False)
     story_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     trending = models.BooleanField(default=False, help_text="No=Not Trending, Yes=Trending")
