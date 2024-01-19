@@ -162,7 +162,7 @@ AUTH_USER_MODEL = "users.User"
 #if os.getcwd() == "/app":
 #    DEBUG = False
 #else:
-DEBUG = True
+#DEBUG = True
 
 #DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
 
