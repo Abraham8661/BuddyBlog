@@ -92,17 +92,27 @@ WSGI_APPLICATION = 'BuddyBlog.wsgi.application'
 #    }
 #}
 
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': os.environ.get('BUDDY_USER', 'default_user'),
-        'PASSWORD': os.environ.get('BUDDY_PASSWORD', 'default_password'),
-        'HOST': os.environ.get('BUDDY_HOST', 'localhost'),
-        'PORT': '5432',
-    }
+  'default': {
+      'ENGINE': 'django.db.backends.postgresql',
+      'NAME': 'buddy_blog',
+      'USER': 'postgres',
+      'PASSWORD': 'Mr.Abraham1@',
+      'HOST': 'localhost',
+      'PORT': '5432',
+  }
 }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'postgres',
+#        'USER': os.environ.get('BUDDY_USER', 'default_user'),
+#        'PASSWORD': os.environ.get('BUDDY_PASSWORD', 'default_password'),
+#        'HOST': os.environ.get('BUDDY_HOST', 'localhost'),
+#        'PORT': '5432',
+#    }
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
