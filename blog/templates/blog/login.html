@@ -25,8 +25,10 @@
     <form class="login-form" action="" method="POST">
         {% csrf_token %}
         <h2>Hi, welcome back!</h2>
+        {% comment "" %}
         <a id="google-btn" href=""><i class="fa-brands fa-google"></i> Sign in with Google</a>
         <p>Or use your email</p>
+        {% endcomment %}
         <div class="form-control">
             <label for="email">Email</label>
             <input type="text" name="email" placeholder="Enter your email address">

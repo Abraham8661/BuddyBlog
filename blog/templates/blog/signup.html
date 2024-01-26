@@ -39,8 +39,10 @@
     <form class="login-form" action="" method="POST">
         {% csrf_token %}
         <h2>Create your account</h2>
+        {% comment "" %}
         <a id="google-btn" href=""><i class="fa-brands fa-google"></i> Sign up with Google</a>
         <p>Or use your email</p>
+        {% endcomment %}
         {% for field in signup_form %}
         <div class="form-control">
             {{ field.label }}
